@@ -1,5 +1,19 @@
 import { app, BrowserWindow } from 'electron';
-import path from 'path';
+import path from 'node:path';
+
+declare const MAIN_WINDOW_VITE_DEV_SERVER_URL: string;
+declare const MAIN_WINDOW_VITE_NAME: string;
+
+declare global {
+  interface Window {
+    electron: {
+      store: {
+        get: (key: string) => any
+        set: (key: string, val: any) => void
+      }
+    }
+  }
+}
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
@@ -9,10 +23,20 @@ if (require('electron-squirrel-startup')) {
 const createWindow = () => {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
-    width: 800,
-    height: 600,
+
+    width: 960,
+    height: 720,
+
+    maxWidth: 1920,
+    maxHeight: 1080,
+
+    minWidth: 720,
+
+    autoHideMenuBar: true,
+
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
+      // nodeIntegration: true
     },
   });
 

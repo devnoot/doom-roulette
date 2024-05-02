@@ -1,3 +1,5 @@
+import { Dices } from 'lucide-react'
+import { useState } from 'react'
 import DoomRouletteLogo from '../assets/doom-roulette.png'
 import { ModTypeSelect } from '../components/mod-type-select'
 import { Button } from '../components/ui/button'
@@ -9,33 +11,28 @@ import {
   CardTitle
 } from '../components/ui/card'
 import { Rating } from '../components/ui/rating'
-import { Separator } from '../components/ui/separator'
 import { Skeleton } from '../components/ui/skeleton'
 import { UserSettingsDrawer } from '../components/user-settings-menu'
 import { useRandomWad } from '../hooks/useRandomWad'
 import { cn } from '../lib/utils'
-import { Dices } from 'lucide-react'
-import { useState } from 'react'
-import { CopyBlock, googlecode } from 'react-code-blocks'
-import { useLocalStorage } from 'react-use'
+// import { store } from '../store'
 
 export const Home = () => {
-  const [modType, setModType] = useState('doom')
-  const [odamexRunCommand, setOdamexRunCommand] = useState('')
-  const [gzdoomRunCommand, setGzdoomRunCommand] = useState('')
 
-  const [odamexPath, setOdamexPath, removeOdamexPath] = useLocalStorage(
-    'odamex-path',
-    ''
-  )
-  const [gzdoomPath, setGzdoomPath, removeGzdoomPath] = useLocalStorage(
-    'gzdoom-path',
-    ''
-  )
+  const [modType, setModType] = useState('doom')
 
   const { loading, error, wad, getRandomWad } = useRandomWad({
     modType: modType
   })
+
+  // const gzdoomPath = store.get('gzdoomPath')
+  // const odamexPath = store.get('odamexPath')
+
+  // console.log({ gzdoomPath, odamexPath })
+  
+  function launchGame() {
+    alert('Not implemented')
+  }
 
   return (
     <div
@@ -79,6 +76,22 @@ export const Home = () => {
               <Dices className={cn('me-2', loading && 'animate-spin')} />
               Get a new mod
             </Button>
+
+            <Button
+              size="lg"
+              className={cn(
+                'w-full',
+                'hover:scale-110',
+                'ease-in-out',
+                'transition',
+                'delay-150',
+                'duration-300'
+              )}
+              onClick={launchGame}
+              disabled={!wad || loading}
+            >
+              Launch Game with Mod 
+            </Button>
           </div>
 
           <UserSettingsDrawer />
@@ -88,7 +101,7 @@ export const Home = () => {
       {error && <div>{error}</div>}
 
       {wad ? (
-        <Card className={cn('w-[800px]', 'h-[600px]')}>
+        <Card className={cn('w-full')}>
           <CardHeader>
             <CardTitle>{wad.title}</CardTitle>
             <CardDescription>
@@ -103,37 +116,7 @@ export const Home = () => {
 
             <div>{wad.description}</div>
 
-            <Separator className='my-5' />
-
-            <div className={cn('space-y-2')}>
-              {odamexPath && odamexPath !== '' && (
-                <div>
-                  <p>Copy and run this command to run Odamex with this mod</p>
-                  <CopyBlock
-                    text={odamexRunCommand}
-                    showLineNumbers={false}
-                    theme={googlecode}
-                    language={
-                      odamexPath.includes('.exe') ? 'powershell' : 'shell'
-                    }
-                  />
-                </div>
-              )}
-
-              {gzdoomPath && gzdoomPath !== '' && (
-                <div>
-                  <p>Copy and run this command to run Gzdoom with this mod</p>
-                  <CopyBlock
-                    text={gzdoomRunCommand}
-                    showLineNumbers={false}
-                    theme={googlecode}
-                    language={
-                      gzdoomPath.includes('.exe') ? 'powershell' : 'shell'
-                    }
-                  />
-                </div>
-              )}
-            </div>
+            {/* <Separator className='my-5' /> */}
 
             {/* <p>{wad.id}</p>
             <p>{wad.age}</p>
@@ -143,7 +126,7 @@ export const Home = () => {
           </CardContent>
         </Card>
       ) : (
-        <Skeleton className={cn('w-[800px]', 'h-[600px]')} />
+        <Skeleton className={cn('w-[800px]', 'min-h-[200px]')} />
       )}
     </div>
   )
