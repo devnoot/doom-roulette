@@ -1,7 +1,7 @@
 import { cn } from '../lib/utils'
 import { Settings } from 'lucide-react'
 import { ChangeEvent, useEffect, useState } from 'react'
-import { useLocalStorage } from 'react-use'
+import { useDebounce } from 'react-use'
 
 import { Button } from './ui/button'
 import {
@@ -22,54 +22,27 @@ const DOOM_ENGINE_REGEXP =
   /^[a-zA-Z]:((\\|\/)[a-zA-Z0-9\s_@\-^!#$%&+={}[\]]+)+\.exe$/i
 
 export const UserSettingsDrawer = ({ ...rest }) => {
-  const [odamexPath, setOdamexPath] = useLocalStorage('odamex-path', '')
-  const [gzdoomPath, setGzdoomPath] = useLocalStorage('gzdoom-path', '')
 
-  const [wadsPath, setWadsPath] = useLocalStorage('wads-path', '')
+  const [odamexFieldValue, setOdamexFieldValue] = useState( window.api.odamex ?? '' )
+  const [gzdoomFieldValue, setGzdoomFieldValue] = useState( window.api.gzdoom ?? '' )
+  const [pwadsFieldValue, setPwadsFieldValue] = useState( window.api.pwads ?? '' )
+  const [iwadsFieldValue, setIwadsFieldValue] = useState( window.api.iwads ?? '' )
 
-  const [odamexFieldValue, setOdamexFieldValue] = useState(
-    odamexPath ? decodeURIComponent(odamexPath) : ''
-  )
-  const [gzdoomFieldValue, setGzdoomFieldValue] = useState(
-    gzdoomPath ? decodeURIComponent(gzdoomPath) : ''
-  )
-  const [wadsPathFieldValue, setWadsPathFieldValue] = useState(
-    wadsPath ? decodeURIComponent(wadsPath) : ''
-  )
+  useDebounce(() => {
+    window.api.setOdamex(odamexFieldValue)
+    window.api.setGzdoom(gzdoomFieldValue)
+    window.api.setPwads(pwadsFieldValue)
+    window.api.setIwads(iwadsFieldValue)
+  }, 666, [odamexFieldValue, gzdoomFieldValue, pwadsFieldValue, iwadsFieldValue])
 
-  const [, setOdamexPathIsValid] = useState(false)
-  const [, setGzdoomPathIsValid] = useState(false)
+  const onOdamexFieldValueChanged = (e: ChangeEvent<HTMLInputElement>) => setOdamexFieldValue(e.target.value)
+  const onGzdoomFieldValueChanged = (e: ChangeEvent<HTMLInputElement>) => setGzdoomFieldValue(e.target.value)
+  const onPwadsFieldValueChanged = (e: ChangeEvent<HTMLInputElement>) => setPwadsFieldValue(e.target.value)
+  const onIwadsFieldValueChanged = (e: ChangeEvent<HTMLInputElement>) => setIwadsFieldValue(e.target.value)
+  
+  // useEffect(() => {
 
-  const [, setOdamexFieldTouched] = useState(false)
-  const [, setGzdoomFieldTouched] = useState(false)
-  const [, setWadsPathFieldTouched] = useState(false)
-
-  const onOdamexFieldValueChanged = (e: ChangeEvent<HTMLInputElement>) => {
-    setOdamexFieldTouched(true)
-    setOdamexFieldValue(e.target.value)
-  }
-
-  const onGzdoomFieldValueChanged = (e: ChangeEvent<HTMLInputElement>) => {
-    setGzdoomFieldTouched(true)
-    setGzdoomFieldValue(e.target.value)
-  }
-
-  const onWadsPathFieldValueChanged = (e: ChangeEvent<HTMLInputElement>) => {
-    setWadsPathFieldTouched(true)
-    setWadsPathFieldValue(e.target.value)
-  }
-
-  // Update the path validity in the case that the field is not empty
-  useEffect(() => {
-    setOdamexPathIsValid(DOOM_ENGINE_REGEXP.test(odamexFieldValue))
-    setGzdoomPathIsValid(DOOM_ENGINE_REGEXP.test(gzdoomFieldValue))
-    setOdamexPath(encodeURIComponent(odamexFieldValue))
-    setGzdoomPath(encodeURIComponent(gzdoomFieldValue))
-  }, [odamexFieldValue, gzdoomFieldValue])
-
-  useEffect(() => {
-    setWadsPath(encodeURIComponent(wadsPathFieldValue))
-  }, [wadsPathFieldValue])
+  // }, [odamexFieldValue, gzdoomFieldValue, pwadsFieldValue, iwadsFieldValue])
 
   return (
     <Drawer {...rest}>
@@ -112,12 +85,22 @@ export const UserSettingsDrawer = ({ ...rest }) => {
           </div>
 
           <div>
-            <Label htmlFor='wads-path'>Path to wad directory</Label>
+            <Label htmlFor='iwads-path'>Path to iwad directory</Label>
             <Input
-              id='wads-path'
-              name='wads-path'
-              onChange={onWadsPathFieldValueChanged}
-              value={wadsPathFieldValue}
+              id='iwads-path'
+              name='iwads-path'
+              onChange={onIwadsFieldValueChanged}
+              value={iwadsFieldValue}
+            />
+          </div>
+
+          <div>
+            <Label htmlFor='pwads-path'>Path to pwad directory</Label>
+            <Input
+              id='pwads-path'
+              name='pwads-path'
+              onChange={onPwadsFieldValueChanged}
+              value={pwadsFieldValue}
             />
           </div>
 

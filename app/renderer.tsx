@@ -33,4 +33,6 @@ import './index.css'
 
 const $root = document.getElementById('root')!
 
+console.log(window.settings)
+
 createRoot($root).render(<App />)

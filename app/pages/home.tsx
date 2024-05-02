@@ -15,7 +15,7 @@ import { Skeleton } from '../components/ui/skeleton'
 import { UserSettingsDrawer } from '../components/user-settings-menu'
 import { useRandomWad } from '../hooks/useRandomWad'
 import { cn } from '../lib/utils'
-// import { store } from '../store'
+
 
 export const Home = () => {
 

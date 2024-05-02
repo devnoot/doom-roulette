@@ -1,19 +1,11 @@
+// boostrap electron app
+// this process runs in node.js
+
 import { app, BrowserWindow } from 'electron';
 import path from 'node:path';
 
 declare const MAIN_WINDOW_VITE_DEV_SERVER_URL: string;
 declare const MAIN_WINDOW_VITE_NAME: string;
-
-declare global {
-  interface Window {
-    electron: {
-      store: {
-        get: (key: string) => any
-        set: (key: string, val: any) => void
-      }
-    }
-  }
-}
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
@@ -21,8 +13,9 @@ if (require('electron-squirrel-startup')) {
 }
 
 const createWindow = () => {
+
   // Create the browser window.
-  const mainWindow = new BrowserWindow({
+  const win = new BrowserWindow({
 
     width: 960,
     height: 720,
@@ -34,21 +27,25 @@ const createWindow = () => {
 
     autoHideMenuBar: true,
 
+    titleBarStyle: 'hiddenInset',
+
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
-      // nodeIntegration: true
+      nodeIntegration: true,
+      // nodeIntegrationInWorker: true
     },
   });
 
   // and load the index.html of the app.
   if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
-    mainWindow.loadURL(MAIN_WINDOW_VITE_DEV_SERVER_URL);
+    win.loadURL(MAIN_WINDOW_VITE_DEV_SERVER_URL);
+    win.maximize()
   } else {
-    mainWindow.loadFile(path.join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`));
+    win.loadFile(path.join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`));
   }
 
   // Open the DevTools.
-  mainWindow.webContents.openDevTools();
+  win.webContents.openDevTools();
 };
 
 // This method will be called when Electron has finished
