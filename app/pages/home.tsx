@@ -25,13 +25,8 @@ export const Home = () => {
     modType: modType
   })
 
-  // const gzdoomPath = store.get('gzdoomPath')
-  // const odamexPath = store.get('odamexPath')
-
-  // console.log({ gzdoomPath, odamexPath })
-  
-  function launchGame() {
-    alert('Not implemented')
+  const launchGame = () => {
+    window.api.launchOdamex()
   }
 
   return (

@@ -1,8 +1,9 @@
 // See the Electron documentation for details on how to use preload scripts:
 // https://www.electronjs.org/docs/latest/tutorial/process-model#preload-scripts
 
-import { app, contextBridge, ipcRenderer } from "electron";
+import { contextBridge } from "electron";
 import fs from 'fs'
+import child from 'child_process'
 
 const serialize = JSON.stringify
 const deserialize = JSON.parse
@@ -42,5 +43,14 @@ contextBridge.exposeInMainWorld('api', {
     setPwads: (path: string) => writeConfig('pwads', path),
 
     iwads: cfg.iwads,
-    setIwads: (path: string) => writeConfig('iwads', path)
+    setIwads: (path: string) => writeConfig('iwads', path),
+
+    launchOdamex: (odamexArgs: string[] = []) => child.execFile(cfg.odamex, odamexArgs, (err, data) => {
+        if (err) {
+            console.error(err)
+            return
+        }
+
+        console.log(data.toString())
+    })
 })
