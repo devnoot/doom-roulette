@@ -22,5 +22,14 @@ export default defineConfig((env) => {
       alias: { '@': joinPath(__dirname, '../../app')}
     },
     clearScreen: false,
+    server: {
+      proxy: {
+        '/api': {
+          target: 'https://www.doomworld.com/idgames/api/api.php',
+          changeOrigin: true,
+          rewrite: (path) => path.replace(/^\/api/, '')
+        }
+      }
+    }
   } as UserConfig;
 });
