@@ -41,6 +41,14 @@ const createWindow = () => {
 
   // Open the DevTools.
   win.webContents.openDevTools();
+
+  // Create the download helper
+  win.webContents.session.on('will-download', (event, item, webContents) => {
+    // set the save path, otherwise Electron will prompt about where to save
+  })
+
+
+
 };
 
 // This method will be called when Electron has finished

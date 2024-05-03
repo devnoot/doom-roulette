@@ -1,9 +1,10 @@
 // See the Electron documentation for details on how to use preload scripts:
 // https://www.electronjs.org/docs/latest/tutorial/process-model#preload-scripts
 
+import child from 'child_process';
 import { contextBridge } from "electron";
-import fs from 'fs'
-import child from 'child_process'
+import fs from 'fs';
+import https = require("https")
 
 const serialize = JSON.stringify
 const deserialize = JSON.parse
@@ -32,6 +33,7 @@ const writeConfig = (key: string, val: any) => {
 
 const cfg = readConfig()
 
+
 contextBridge.exposeInMainWorld('api', {
     odamex: cfg.odamex,
     setOdamex: (newPath: string) => writeConfig('odamex', newPath),
@@ -50,7 +52,23 @@ contextBridge.exposeInMainWorld('api', {
             console.error(err)
             return
         }
+        console.info(data.toString())
+    }),
 
-        console.log(data.toString())
-    })
+    downloadToPath: (url: string, path: string) => {
+
+        https.get(url, (res => {
+
+            console.log('Starting download')
+            const cfg = readConfig()
+            const path = cfg.pwads || '.' 
+            const filepath = fs.createWriteStream(path)
+            res.pipe(filepath)
+            filepath.on('finish', () => {
+                filepath.close()
+                console.log('Download complete')
+            })            
+
+        }))
+    }
 })

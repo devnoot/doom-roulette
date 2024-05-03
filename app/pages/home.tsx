@@ -29,6 +29,15 @@ export const Home = () => {
     window.api.launchOdamex()
   }
 
+  const download = (wad) => {
+    //window.api.downloadToPath()
+    const downloadURL = `https://doomworld.com/idgames/${wad.idgamesurl.replace('idgames://', '')}`
+    const a = createElement('a')
+    
+    console.log(wad, downloadURL)
+    
+  }
+
   return (
     <div
       className={cn(
@@ -104,12 +113,15 @@ export const Home = () => {
             </CardDescription>
           </CardHeader>
           <CardContent>
+
             <div className='mb-3'>
               <Rating rating={+wad.rating} />
               <div>{wad.votes} votes</div>
             </div>
 
             <div>{wad.description}</div>
+
+            <Button onClick={() => download(wad)}>Download</Button>
 
             {/* <Separator className='my-5' /> */}
 
