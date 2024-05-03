@@ -4,7 +4,10 @@
 import child from 'child_process';
 import { contextBridge } from "electron";
 import fs from 'fs';
-import https = require("https")
+import https from 'https'
+import { join as joinPath } from 'path'
+import extract from 'extract-zip'
+import { type Entry } from 'yauzl';
 
 const serialize = JSON.stringify
 const deserialize = JSON.parse
@@ -55,20 +58,39 @@ contextBridge.exposeInMainWorld('api', {
         console.info(data.toString())
     }),
 
-    downloadToPath: (url: string, path: string) => {
+    downloadToPath: (url: string, filename: string) => {
+        return new Promise((resolve, reject) => {
 
-        https.get(url, (res => {
+            https.get(url, (res => {
 
-            console.log('Starting download')
-            const cfg = readConfig()
-            const path = cfg.pwads || '.' 
-            const filepath = fs.createWriteStream(path)
-            res.pipe(filepath)
-            filepath.on('finish', () => {
-                filepath.close()
-                console.log('Download complete')
-            })            
+                const cfg = readConfig()
+                const targetDir = cfg.pwads || '.'
+                const filepath = joinPath(targetDir, filename) 
+                const filestream = fs.createWriteStream(filepath)
+                res.pipe(filestream)
+                
+                filestream.on('finish', () => {
+                    filestream.close()
+                    // unzip the file and extract it to the same location. then return a list of the extract files
+                    const entries: Entry[] = []
+                    
+                    extract(filepath, { 
+                        dir: targetDir, 
+                        onEntry: (entry, zipFile) => {
+                            console.log({ entry })
+                            entries.push(entry)
+                        } 
+                    })
+                        .then(() => {
+                            console.log('Download complete')
+                            resolve(entries)   
+                        })
+                        .catch(err => reject(err))
+                })   
+    
+            }))
+        })
 
-        }))
     }
+
 })

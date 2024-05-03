@@ -29,12 +29,20 @@ export const Home = () => {
     window.api.launchOdamex()
   }
 
-  const download = (wad) => {
-    //window.api.downloadToPath()
-    const downloadURL = `https://doomworld.com/idgames/${wad.idgamesurl.replace('idgames://', '')}`
-    const a = createElement('a')
+  const download = async (wad) => {
     
-    console.log(wad, downloadURL)
+    //window.api.downloadToPath()
+    const mirror = `https://youfailit.net/pub/`
+    const downloadURL = `${mirror}/idgames/${wad.idgamesurl.replace('idgames://', '')}`
+
+    const res = await window.api.downloadToPath(downloadURL, wad.filename)
+
+    // const a = document.createElement('a')
+    // a.href = downloadURL
+    // a.download = wad.name
+    // a.click()
+
+    console.log({wad, downloadURL, res})
     
   }
 
