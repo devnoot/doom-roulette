@@ -1,5 +1,6 @@
 import { Dices } from 'lucide-react'
 import { useState } from 'react'
+
 import DoomRouletteLogo from '../assets/doom-roulette.png'
 import { ModTypeSelect } from '../components/mod-type-select'
 import { Button } from '../components/ui/button'
@@ -16,34 +17,65 @@ import { UserSettingsDrawer } from '../components/user-settings-menu'
 import { useRandomWad } from '../hooks/useRandomWad'
 import { cn } from '../lib/utils'
 
-
 export const Home = () => {
-
   const [modType, setModType] = useState('doom')
+
+  const [canLaunch, setCanLaunch] = useState(true)
+  const [launchArgs, setLaunchArgs] = useState<string[]>([])
 
   const { loading, error, wad, getRandomWad } = useRandomWad({
     modType: modType
   })
 
   const launchGame = () => {
-    window.api.launchOdamex()
+    window.api.launchOdamex(launchArgs)
   }
 
-  const download = async (wad) => {
-    
+  const downloadAndExtract = async (wad) => {
     //window.api.downloadToPath()
     const mirror = `https://youfailit.net/pub/`
     const downloadURL = `${mirror}/idgames/${wad.idgamesurl.replace('idgames://', '')}`
 
-    const res = await window.api.downloadToPath(downloadURL, wad.filename)
+    const archivedFiles = await window.api.downloadToPath(
+      downloadURL,
+      wad.filename
+    )
 
-    // const a = document.createElement('a')
-    // a.href = downloadURL
-    // a.download = wad.name
-    // a.click()
+    const filenames = archivedFiles
+      .map((f) => f.fileName)
+      .filter((f) => !f.toUpperCase().endsWith('.TXT'))
 
-    console.log({wad, downloadURL, res})
-    
+    const programArgs = []
+
+    programArgs.push('-iwad')
+    programArgs.push(`${window.api.iwads}\\${modType.toUpperCase()}.WAD`)
+    programArgs.push('-file')
+    programArgs.push(
+      `${filenames
+        .filter((f) => f.toUpperCase().endsWith('.WAD'))
+        .map((f) => `${window.api.pwads}\\${f}`)
+        .join(' ')}`
+    )
+    programArgs.push(`-skill`)
+    programArgs.push('3')
+
+    if (filenames.filter((f) => f.toUpperCase().endsWith('.DEH'))) {
+      const dehFiles = filenames.filter((f) => f.toUpperCase().endsWith('.DEH'))
+      dehFiles.forEach((f) => {
+        programArgs.push(`-deh `)
+        programArgs.push(f)
+      })
+    }
+
+    if (filenames.filter((f) => f.toUpperCase().endsWith('.BEH'))) {
+      const behFiles = filenames.filter((f) => f.toUpperCase().endsWith('.BEH'))
+      behFiles.forEach((f) => {
+        programArgs.push(`-beh `)
+        programArgs.push(f)
+      })
+    }
+
+    setLaunchArgs(programArgs)
   }
 
   return (
@@ -58,7 +90,7 @@ export const Home = () => {
         'p-10'
       )}
     >
-      <div className={cn('inline-flex', 'mb-3')}>
+      <div className={cn('inline-flex', 'mb-3', 'w-full')}>
         <img
           src={DoomRouletteLogo}
           alt='Doom Roulette'
@@ -71,6 +103,7 @@ export const Home = () => {
               onValueChange={(newValue) => setModType(newValue)}
               value={modType}
               defaultValue='doom'
+              className='w-full'
             />
             <Button
               size='lg'
@@ -90,7 +123,7 @@ export const Home = () => {
             </Button>
 
             <Button
-              size="lg"
+              size='lg'
               className={cn(
                 'w-full',
                 'hover:scale-110',
@@ -100,9 +133,9 @@ export const Home = () => {
                 'duration-300'
               )}
               onClick={launchGame}
-              disabled={!wad || loading}
+              disabled={!canLaunch}
             >
-              Launch Game with Mod 
+              Launch Game with Mod
             </Button>
           </div>
 
@@ -121,7 +154,6 @@ export const Home = () => {
             </CardDescription>
           </CardHeader>
           <CardContent>
-
             <div className='mb-3'>
               <Rating rating={+wad.rating} />
               <div>{wad.votes} votes</div>
@@ -129,7 +161,7 @@ export const Home = () => {
 
             <div>{wad.description}</div>
 
-            <Button onClick={() => download(wad)}>Download</Button>
+            <Button onClick={() => downloadAndExtract(wad)}>Download</Button>
 
             {/* <Separator className='my-5' /> */}
 

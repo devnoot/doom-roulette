@@ -1,5 +1,6 @@
-import { File } from '../lib/idgames'
 import { useCallback, useEffect, useState } from 'react'
+
+import { File } from '../lib/idgames'
 
 export type useRandomWadProps = {
   modType: 'doom' | 'doom2' | 'doom64' | 'heretic' | 'hexen' | string
