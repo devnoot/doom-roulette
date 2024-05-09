@@ -2,6 +2,7 @@ import { Dices } from 'lucide-react'
 import { useState } from 'react'
 
 import DoomRouletteLogo from '../assets/doom-roulette.png'
+import { GameTypeToggleGroup } from '../components/game-type-toggle-group'
 import { ModTypeSelect } from '../components/mod-type-select'
 import { Button } from '../components/ui/button'
 import {
@@ -105,6 +106,9 @@ export const Home = () => {
               defaultValue='doom'
               className='w-full'
             />
+
+            <GameTypeToggleGroup onSelectedGameTypesChange={console.info} />
+
             <Button
               size='lg'
               className={cn(

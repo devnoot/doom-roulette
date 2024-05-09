@@ -19,7 +19,7 @@ const createWindow = () => {
 
     autoHideMenuBar: true,
 
-    titleBarStyle: 'hiddenInset',
+    titleBarStyle: 'default',
 
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
