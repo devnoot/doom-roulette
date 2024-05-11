@@ -95,41 +95,27 @@ export const Home = () => {
         'p-10'
       )}
     >
-      <div className={cn('inline-flex', 'mb-3', 'w-full')}>
+      <div className={cn('flex', 'mb-3')}>
         <img
           src={DoomRouletteLogo}
           alt='Doom Roulette'
-          className={cn('sm:w-64', 'mb-3', 'aspect-square')}
+          className={cn('sm:w-64', 'mb-3', 'object-contain')}
         />
 
         <div className={cn('flex', 'flex-col', 'p-5')}>
-          <div className={cn('space-y-3')}>
-            <div>
-              <p className="mb-1 font-['Kode_Mono']">Select base game</p>
-              <GameTypeToggleGroup
-                onSelectedGameTypesChange={(v) => setSelectedModTypes(v)}
-              />
-            </div>
+          <p className="font-['Kode_Mono']">Select base game</p>
+          <GameTypeToggleGroup
+            onSelectedGameTypesChange={(v) => setSelectedModTypes(v)}
+          />
 
-            <Button
-              size='lg'
-              className={cn('w-full')}
-              onClick={getRandomWad}
-              disabled={loading}
-            >
-              <Dices className={cn('me-2', loading && 'animate-spin')} />
-              Get a new mod
-            </Button>
+          <Button size='lg' onClick={getRandomWad} disabled={loading}>
+            <Dices className={cn('me-2', loading && 'animate-spin')} />
+            Get a new mod
+          </Button>
 
-            <Button
-              size='lg'
-              className={cn('w-full')}
-              onClick={launchGame}
-              disabled={!canLaunch}
-            >
-              Launch Game with Mod
-            </Button>
-          </div>
+          <Button size='lg' onClick={launchGame} disabled={!canLaunch}>
+            Launch Game with Mod
+          </Button>
 
           <UserSettingsDrawer />
         </div>
