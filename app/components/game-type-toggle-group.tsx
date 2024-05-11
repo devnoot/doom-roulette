@@ -3,12 +3,13 @@ import Caco1 from '../assets/caco1.png'
 import Caco2 from '../assets/caco2.png'
 import Cposc1 from '../assets/cposc1.png'
 import Cpose1 from '../assets/cpose1.png'
-import Dem2f1 from '../assets/dem2f1.png'
-import Dem2g1 from '../assets/dem2g1.png'
 import Mumx5 from '../assets/mummx5.png'
 import Mum1 from '../assets/mummy1.png'
+import Fdmnj0 from '../assets/fdmnj0.png'
+import Fdmnk1 from '../assets/fdmnk1.png'
 
 import { cn } from '../lib/utils'
+import { Label } from './ui/label'
 
 export type GameType = 'DOOM' | 'DOOM 2' | 'HEXEN' | 'HERETIC'
 
@@ -22,53 +23,51 @@ export const GameTypeToggleGroup = ({
   const [selectedGameTypes, setSelectedGameTypes] = useState<GameType[]>([])
 
   const renderIcon = (gameType: GameType) => {
+
     switch (gameType) {
       case 'DOOM':
         return selectedGameTypes.includes(gameType) 
-          ? <img src={Caco2} alt="DOOM" />
-          : <img src={Caco1} alt="DOOM" />
+          ? <img className={cn('w-16', 'h-16', 'transition-all')} src={Caco2} alt="DOOM" />
+          : <img className={cn('w-16', 'h-16', 'grayscale', 'transition-all')} src={Caco1} alt="DOOM" />
       case 'DOOM 2':
         return selectedGameTypes.includes(gameType) 
-          ? <img src={Cpose1} alt="DOOM 2" />
-          : <img src={Cposc1} alt="DOOM 2" />
+          ? <img className={cn('h-16', 'transition-all')} src={Cpose1} alt="DOOM 2" />
+          : <img className={cn('h-16', 'grayscale', 'transition-all')} src={Cposc1} alt="DOOM 2" />
       case 'HEXEN':
         return selectedGameTypes.includes(gameType) 
-          ? <img src={Dem2g1} alt="HEXEN" />
-          : <img src={Dem2f1} alt="HEXEN" />
+          ? <img  className={cn('h-16', 'transition-all')} src={Fdmnk1} alt="HEXEN" />
+          : <img  className={cn('h-16', 'grayscale', 'transition-all')} src={Fdmnj0} alt="HEXEN" />
       case 'HERETIC':
         return selectedGameTypes.includes(gameType) 
-          ? <img src={Mum1} alt="HERETIC" />
-          : <img src={Mumx5} alt="HERETIC" />
+          ? <img  className={cn('h-16', 'transition-all')} src={Mum1} alt="HERETIC" />
+          : <img  className={cn('h-16', 'grayscale', 'transition-all')} src={Mumx5} alt="HERETIC" />
     }
   }
+
+  const toggle = (gameType: GameType) => {
+    selectedGameTypes.includes(gameType) 
+      ? setSelectedGameTypes([ ...selectedGameTypes.filter((g) => g !== gameType)])
+      : setSelectedGameTypes([...selectedGameTypes, gameType].filter((a) => a))
+    }
 
   return (
     <div className={cn('inline-flex')}>
       {['DOOM', 'DOOM 2', 'HEXEN', 'HERETIC'].map((gameType: GameType) => (
-        <div key={gameType} className={cn('w-32', 'h-32')}>
+        <div key={gameType}>
           <button
             className={cn(
+              selectedGameTypes.includes(gameType) && 'text-orange-500',
+              'w-24',
               'flex',
               'flex-col',
-              'h-64',
-              'max-h-64',
-              selectedGameTypes.includes(gameType) && 'text-blue-500'
+              'items-center',
+              'border',
+              'p-3'
             )}
-            onClick={() => {
-              if (selectedGameTypes.includes(gameType)) {
-                setSelectedGameTypes([
-                  ...selectedGameTypes.filter((g) => g !== gameType)
-                ])
-              } else {
-                setSelectedGameTypes(
-                  [...selectedGameTypes, gameType].filter((a) => a)
-                )
-              }
-            }}
+            onClick={() => toggle(gameType)}
           >
             {renderIcon(gameType)}
-
-            {gameType}
+            <Label className={cn("font-['Kode_Mono']", 'mt-3', 'text-lg')}>{gameType}</Label>
           </button>
         </div>
       ))}
