@@ -2,8 +2,10 @@ import { Dices } from 'lucide-react'
 import { useState } from 'react'
 
 import DoomRouletteLogo from '../assets/doom-roulette.png'
-import { GameTypeToggleGroup } from '../components/game-type-toggle-group'
-import { ModTypeSelect } from '../components/mod-type-select'
+import {
+  GameType,
+  GameTypeToggleGroup
+} from '../components/game-type-toggle-group'
 import { Button } from '../components/ui/button'
 import {
   Card,
@@ -20,6 +22,8 @@ import { cn } from '../lib/utils'
 
 export const Home = () => {
   const [modType, setModType] = useState('doom')
+
+  const [selectedModTypes, setSelectedModTypes] = useState<GameType[]>([])
 
   const [canLaunch, setCanLaunch] = useState(true)
   const [launchArgs, setLaunchArgs] = useState<string[]>([])
@@ -95,30 +99,21 @@ export const Home = () => {
         <img
           src={DoomRouletteLogo}
           alt='Doom Roulette'
-          className={cn('sm:w-64', 'mb-3')}
+          className={cn('sm:w-64', 'mb-3', 'aspect-square')}
         />
 
         <div className={cn('flex', 'flex-col', 'p-5')}>
-          <div className={cn('flex-1', 'space-y-3')}>
-            <ModTypeSelect
-              onValueChange={(newValue) => setModType(newValue)}
-              value={modType}
-              defaultValue='doom'
-              className='w-full'
-            />
-
-            <GameTypeToggleGroup onSelectedGameTypesChange={console.info} />
+          <div className={cn('space-y-3')}>
+            <div>
+              <p className="mb-1 font-['Kode_Mono']">Select base game</p>
+              <GameTypeToggleGroup
+                onSelectedGameTypesChange={(v) => setSelectedModTypes(v)}
+              />
+            </div>
 
             <Button
               size='lg'
-              className={cn(
-                'w-full',
-                'transition',
-                'ease-in-out',
-                'delay-150',
-                'hover:scale-110',
-                'duration-300'
-              )}
+              className={cn('w-full')}
               onClick={getRandomWad}
               disabled={loading}
             >
@@ -128,14 +123,7 @@ export const Home = () => {
 
             <Button
               size='lg'
-              className={cn(
-                'w-full',
-                'hover:scale-110',
-                'ease-in-out',
-                'transition',
-                'delay-150',
-                'duration-300'
-              )}
+              className={cn('w-full')}
               onClick={launchGame}
               disabled={!canLaunch}
             >

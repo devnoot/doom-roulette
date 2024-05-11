@@ -26,16 +26,18 @@ export const useRandomWad = ({
 
       // First we need to get the directories
       const name = `levels/${modType}/`
-      const out = `json`
+      const outputType = `json`
 
       let action = `getdirs`
 
-      let url = encodeURI(`/api?action=${action}&name=${name}&out=${out}`)
+      let url = encodeURI(
+        `/api?action=${action}&name=${name}&out=${outputType}`
+      )
 
       const getDirsRes = await fetch(url)
       const getDirsJson = await getDirsRes.json()
 
-      // json.content.dir is an array of directories
+      // getDirsJson.content.dir is an array of directories
       const dirs = getDirsJson.content.dir.filter(
         (dir: { id: number; name: string }) =>
           !dir.name.includes('deathmatch') || !dir.name.includes('Ports')
@@ -46,7 +48,9 @@ export const useRandomWad = ({
 
       // get the files in that directory
       action = 'getfiles'
-      url = encodeURI(`/api?action=${action}&name=${dir.name}&out=${out}`)
+      url = encodeURI(
+        `/api?action=${action}&name=${dir.name}&out=${outputType}`
+      )
 
       const getFilesRes = await fetch(url)
       const getFilesJson = await getFilesRes.json()

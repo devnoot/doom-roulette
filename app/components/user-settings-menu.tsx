@@ -1,5 +1,5 @@
 import { Settings } from 'lucide-react'
-import { ChangeEvent, useEffect, useState } from 'react'
+import { ChangeEvent, useState } from 'react'
 import { useDebounce } from 'react-use'
 
 import { cn } from '../lib/utils'
@@ -8,7 +8,6 @@ import {
   Drawer,
   DrawerClose,
   DrawerContent,
-  DrawerDescription,
   DrawerFooter,
   DrawerHeader,
   DrawerTitle,
@@ -16,7 +15,6 @@ import {
 } from './ui/drawer'
 import { Input } from './ui/input'
 import { Label } from './ui/label'
-import { ModeToggle } from './ui/mode-toggle'
 
 const DOOM_ENGINE_REGEXP =
   /^[a-zA-Z]:((\\|\/)[a-zA-Z0-9\s_@\-^!#$%&+={}[\]]+)+\.exe$/i
@@ -51,10 +49,6 @@ export const UserSettingsDrawer = ({ ...rest }) => {
   const onIwadsFieldValueChanged = (e: ChangeEvent<HTMLInputElement>) =>
     setIwadsFieldValue(e.target.value)
 
-  // useEffect(() => {
-
-  // }, [odamexFieldValue, gzdoomFieldValue, pwadsFieldValue, iwadsFieldValue])
-
   return (
     <Drawer {...rest}>
       <DrawerTrigger asChild>
@@ -65,16 +59,9 @@ export const UserSettingsDrawer = ({ ...rest }) => {
       <DrawerContent>
         <DrawerHeader>
           <DrawerTitle>User Settings</DrawerTitle>
-          <DrawerDescription>
-            These are stored in your browser's localStorage.
-          </DrawerDescription>
         </DrawerHeader>
 
         <div className={cn('p-5', 'space-y-4')}>
-          <h3 className='text-base'>
-            <strong>Doom Engine Settings</strong>
-          </h3>
-
           <div>
             <Label htmlFor='odamex-path'>Path to odamex</Label>
             <Input
@@ -115,11 +102,11 @@ export const UserSettingsDrawer = ({ ...rest }) => {
             />
           </div>
 
-          <h3 className='text-base'>
+          {/* <h3 className='text-base'>
             <strong>Theme Settings</strong>
           </h3>
 
-          <ModeToggle />
+          <ModeToggle /> */}
         </div>
 
         <DrawerFooter>
