@@ -52,7 +52,7 @@ export const UserSettingsDrawer = ({ ...rest }) => {
           <Settings className='mr-1' /> User Settings
         </Button>
       </DrawerTrigger>
-      <DrawerContent>
+      <DrawerContent className={cn('max-w-[420px]', 'mx-auto')}>
         <DrawerHeader>
           <DrawerTitle>User Settings</DrawerTitle>
         </DrawerHeader>
