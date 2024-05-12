@@ -52,7 +52,7 @@ export const UserSettingsDrawer = ({ ...rest }) => {
   return (
     <Drawer {...rest}>
       <DrawerTrigger asChild>
-        <Button variant='secondary'>
+        <Button variant='ghost'>
           <Settings className='mr-1' /> User Settings
         </Button>
       </DrawerTrigger>

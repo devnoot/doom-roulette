@@ -102,18 +102,29 @@ export const Home = () => {
           className={cn('sm:w-64', 'mb-3', 'object-contain')}
         />
 
-        <div className={cn('flex', 'flex-col', 'p-5')}>
-          <p className="font-['Kode_Mono']">Select base game</p>
-          <GameTypeToggleGroup
-            onSelectedGameTypesChange={(v) => setSelectedModTypes(v)}
-          />
-
-          <Button size='lg' onClick={getRandomWad} disabled={loading}>
+        <div className={cn('flex', 'flex-col', 'p-6')}>
+          <div className='my-5'>
+            <p className="font-['Kode_Mono']">Select base game</p>
+            <GameTypeToggleGroup
+              onSelectedGameTypesChange={(v) => setSelectedModTypes(v)}
+            />
+          </div>
+          <Button
+            size='lg'
+            variant='outline'
+            onClick={getRandomWad}
+            disabled={loading}
+          >
             <Dices className={cn('me-2', loading && 'animate-spin')} />
             Get a new mod
           </Button>
 
-          <Button size='lg' onClick={launchGame} disabled={!canLaunch}>
+          <Button
+            size='lg'
+            variant='outline'
+            onClick={launchGame}
+            disabled={!canLaunch}
+          >
             Launch Game with Mod
           </Button>
 

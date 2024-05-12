@@ -97,30 +97,39 @@ export const GameTypeToggleGroup = ({
 
   return (
     <div className={cn('flex')}>
-      {['DOOM', 'DOOM 2', 'HEXEN', 'HERETIC'].map((gameType: GameType) => (
-        <div key={gameType}>
-          <button
-            className={cn(
-              selectedGameTypes.includes(gameType) &&
-                'text-orange-500' &&
-                'border-orange-500',
-              'w-24',
-              'flex',
-              'flex-col',
-              'items-center',
-              'border',
-              'p-3',
-              'dark:hover:border-orange-500'
-            )}
-            onClick={() => toggle(gameType)}
-          >
-            {renderIcon(gameType)}
-            <Label className={cn("font-['Kode_Mono']", 'mt-3', 'text-lg')}>
-              {gameType}
-            </Label>
-          </button>
-        </div>
-      ))}
+      {['DOOM', 'DOOM 2', 'HEXEN', 'HERETIC'].map((gameType: GameType) => {
+        const isSelected = selectedGameTypes.includes(gameType)
+
+        return (
+          <div key={gameType}>
+            <button
+              className={cn(
+                isSelected && 'border-orange-500',
+                'w-24',
+                'flex',
+                'flex-col',
+                'items-center',
+                'border',
+                'p-3',
+                'dark:hover:border-orange-500'
+              )}
+              onClick={() => toggle(gameType)}
+            >
+              {renderIcon(gameType)}
+              <Label
+                className={cn(
+                  "font-['Kode_Mono']",
+                  'mt-3',
+                  'text-lg',
+                  isSelected && 'text-orange-500'
+                )}
+              >
+                {gameType}
+              </Label>
+            </button>
+          </div>
+        )
+      })}
     </div>
   )
 }
