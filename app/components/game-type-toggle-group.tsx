@@ -15,10 +15,12 @@ export type GameType = 'DOOM' | 'DOOM 2' | 'HEXEN' | 'HERETIC'
 
 export type GameTypeToggleGroupProps = {
   onSelectedGameTypesChange: (newGameTypes: GameType[]) => void
+  className?: string | string[]
 }
 
 export const GameTypeToggleGroup = ({
-  onSelectedGameTypesChange
+  onSelectedGameTypesChange,
+  className = ''
 }: GameTypeToggleGroupProps) => {
   const [selectedGameTypes, setSelectedGameTypes] = useState<GameType[]>([])
 
@@ -96,21 +98,21 @@ export const GameTypeToggleGroup = ({
   }, [selectedGameTypes])
 
   return (
-    <div className={cn('flex')}>
+    <div className={cn('flex', 'justify-between')}>
       {['DOOM', 'DOOM 2', 'HEXEN', 'HERETIC'].map((gameType: GameType) => {
         const isSelected = selectedGameTypes.includes(gameType)
 
         return (
-          <div key={gameType}>
+          <div key={gameType} className={className}>
             <button
               className={cn(
                 isSelected && 'border-orange-500',
-                'w-24',
                 'flex',
                 'flex-col',
                 'items-center',
                 'border',
                 'p-3',
+                'w-24',
                 'dark:hover:border-orange-500'
               )}
               onClick={() => toggle(gameType)}

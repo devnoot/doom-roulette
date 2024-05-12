@@ -20,25 +20,21 @@ const DOOM_ENGINE_REGEXP =
   /^[a-zA-Z]:((\\|\/)[a-zA-Z0-9\s_@\-^!#$%&+={}[\]]+)+\.exe$/i
 
 export const UserSettingsDrawer = ({ ...rest }) => {
-  const [odamexFieldValue, setOdamexFieldValue] = useState(
-    window.api.odamex ?? ''
-  )
-  const [gzdoomFieldValue, setGzdoomFieldValue] = useState(
-    window.api.gzdoom ?? ''
-  )
-  const [pwadsFieldValue, setPwadsFieldValue] = useState(window.api.pwads ?? '')
-  const [iwadsFieldValue, setIwadsFieldValue] = useState(window.api.iwads ?? '')
+  const [odamexFieldValue, setOdamexFieldValue] = useState('')
+  const [gzdoomFieldValue, setGzdoomFieldValue] = useState('')
+  const [pwadsFieldValue, setPwadsFieldValue] = useState('')
+  const [iwadsFieldValue, setIwadsFieldValue] = useState('')
 
-  useDebounce(
-    () => {
-      window.api.setOdamex(odamexFieldValue)
-      window.api.setGzdoom(gzdoomFieldValue)
-      window.api.setPwads(pwadsFieldValue)
-      window.api.setIwads(iwadsFieldValue)
-    },
-    666,
-    [odamexFieldValue, gzdoomFieldValue, pwadsFieldValue, iwadsFieldValue]
-  )
+  // useDebounce(
+  //   () => {
+  //     window.api.setOdamex(odamexFieldValue)
+  //     window.api.setGzdoom(gzdoomFieldValue)
+  //     window.api.setPwads(pwadsFieldValue)
+  //     window.api.setIwads(iwadsFieldValue)
+  //   },
+  //   666,
+  //   [odamexFieldValue, gzdoomFieldValue, pwadsFieldValue, iwadsFieldValue]
+  // )
 
   const onOdamexFieldValueChanged = (e: ChangeEvent<HTMLInputElement>) =>
     setOdamexFieldValue(e.target.value)

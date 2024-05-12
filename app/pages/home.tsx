@@ -32,57 +32,6 @@ export const Home = () => {
     modType: modType
   })
 
-  const launchGame = () => {
-    window.api.launchOdamex(launchArgs)
-  }
-
-  const downloadAndExtract = async (wad) => {
-    //window.api.downloadToPath()
-    const mirror = `https://youfailit.net/pub/`
-    const downloadURL = `${mirror}/idgames/${wad.idgamesurl.replace('idgames://', '')}`
-
-    const archivedFiles = await window.api.downloadToPath(
-      downloadURL,
-      wad.filename
-    )
-
-    const filenames = archivedFiles
-      .map((f) => f.fileName)
-      .filter((f) => !f.toUpperCase().endsWith('.TXT'))
-
-    const programArgs = []
-
-    programArgs.push('-iwad')
-    programArgs.push(`${window.api.iwads}\\${modType.toUpperCase()}.WAD`)
-    programArgs.push('-file')
-    programArgs.push(
-      `${filenames
-        .filter((f) => f.toUpperCase().endsWith('.WAD'))
-        .map((f) => `${window.api.pwads}\\${f}`)
-        .join(' ')}`
-    )
-    programArgs.push(`-skill`)
-    programArgs.push('3')
-
-    if (filenames.filter((f) => f.toUpperCase().endsWith('.DEH'))) {
-      const dehFiles = filenames.filter((f) => f.toUpperCase().endsWith('.DEH'))
-      dehFiles.forEach((f) => {
-        programArgs.push(`-deh `)
-        programArgs.push(f)
-      })
-    }
-
-    if (filenames.filter((f) => f.toUpperCase().endsWith('.BEH'))) {
-      const behFiles = filenames.filter((f) => f.toUpperCase().endsWith('.BEH'))
-      behFiles.forEach((f) => {
-        programArgs.push(`-beh `)
-        programArgs.push(f)
-      })
-    }
-
-    setLaunchArgs(programArgs)
-  }
-
   return (
     <div
       className={cn(
@@ -119,16 +68,11 @@ export const Home = () => {
             Get a new mod
           </Button>
 
-          <Button
-            size='lg'
-            variant='outline'
-            onClick={launchGame}
-            disabled={!canLaunch}
-          >
+          <Button size='lg' variant='outline' disabled={!canLaunch}>
             Launch Game with Mod
           </Button>
 
-          <UserSettingsDrawer />
+          {/* <UserSettingsDrawer /> */}
         </div>
       </div>
 
@@ -150,7 +94,7 @@ export const Home = () => {
 
             <div>{wad.description}</div>
 
-            <Button onClick={() => downloadAndExtract(wad)}>Download</Button>
+            <Button>Download</Button>
 
             {/* <Separator className='my-5' /> */}
 
