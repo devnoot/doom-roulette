@@ -1,3 +1,4 @@
+import { ModType } from '@/lib/idgames'
 import { useEffect, useState } from 'react'
 
 import Caco1 from '../assets/caco1.png'
@@ -11,23 +12,21 @@ import Mum1 from '../assets/mummy1.png'
 import { cn } from '../lib/utils'
 import { Label } from './ui/label'
 
-export type GameType = 'DOOM' | 'DOOM 2' | 'HEXEN' | 'HERETIC'
-
-export type GameTypeToggleGroupProps = {
-  onSelectedGameTypesChange: (newGameTypes: GameType[]) => void
-  className?: string | string[]
+export type ModTypeToggleGroupProps = {
+  onSelectedModTypesChange: (newModTypes: ModType[]) => void
+  className?: string
 }
 
-export const GameTypeToggleGroup = ({
-  onSelectedGameTypesChange,
+export const ModTypeToggleGroup = ({
+  onSelectedModTypesChange,
   className = ''
-}: GameTypeToggleGroupProps) => {
-  const [selectedGameTypes, setSelectedGameTypes] = useState<GameType[]>([])
+}: ModTypeToggleGroupProps) => {
+  const [selectedModTypes, setSelectedModTypes] = useState<ModType[]>([])
 
-  const renderIcon = (gameType: GameType) => {
-    switch (gameType) {
+  const renderIcon = (modType: ModType) => {
+    switch (modType) {
       case 'DOOM':
-        return selectedGameTypes.includes(gameType) ? (
+        return selectedModTypes.includes(modType) ? (
           <img
             className={cn('w-16', 'h-16', 'transition-all')}
             src={Caco2}
@@ -41,7 +40,7 @@ export const GameTypeToggleGroup = ({
           />
         )
       case 'DOOM 2':
-        return selectedGameTypes.includes(gameType) ? (
+        return selectedModTypes.includes(modType) ? (
           <img
             className={cn('h-16', 'transition-all')}
             src={Cpose1}
@@ -55,7 +54,7 @@ export const GameTypeToggleGroup = ({
           />
         )
       case 'HEXEN':
-        return selectedGameTypes.includes(gameType) ? (
+        return selectedModTypes.includes(modType) ? (
           <img
             className={cn('h-16', 'transition-all')}
             src={Fdmnk1}
@@ -69,7 +68,7 @@ export const GameTypeToggleGroup = ({
           />
         )
       case 'HERETIC':
-        return selectedGameTypes.includes(gameType) ? (
+        return selectedModTypes.includes(modType) ? (
           <img
             className={cn('h-16', 'transition-all')}
             src={Mum1}
@@ -85,25 +84,23 @@ export const GameTypeToggleGroup = ({
     }
   }
 
-  const toggle = (gameType: GameType) => {
-    selectedGameTypes.includes(gameType)
-      ? setSelectedGameTypes([
-          ...selectedGameTypes.filter((g) => g !== gameType)
-        ])
-      : setSelectedGameTypes([...selectedGameTypes, gameType].filter((a) => a))
+  const toggle = (modType: ModType) => {
+    selectedModTypes.includes(modType)
+      ? setSelectedModTypes([...selectedModTypes.filter((g) => g !== modType)])
+      : setSelectedModTypes([...selectedModTypes, modType].filter((a) => a))
   }
 
   useEffect(() => {
-    onSelectedGameTypesChange(selectedGameTypes)
-  }, [selectedGameTypes])
+    onSelectedModTypesChange(selectedModTypes)
+  }, [selectedModTypes])
 
   return (
     <div className={cn('flex', 'justify-between')}>
-      {['DOOM', 'DOOM 2', 'HEXEN', 'HERETIC'].map((gameType: GameType) => {
-        const isSelected = selectedGameTypes.includes(gameType)
+      {['DOOM', 'DOOM 2', 'HEXEN', 'HERETIC'].map((modType: ModType) => {
+        const isSelected = selectedModTypes.includes(modType)
 
         return (
-          <div key={gameType} className={className}>
+          <div key={modType} className={className}>
             <button
               className={cn(
                 isSelected && 'border-orange-500',
@@ -115,9 +112,9 @@ export const GameTypeToggleGroup = ({
                 'w-24',
                 'dark:hover:border-orange-500'
               )}
-              onClick={() => toggle(gameType)}
+              onClick={() => toggle(modType)}
             >
-              {renderIcon(gameType)}
+              {renderIcon(modType)}
               <Label
                 className={cn(
                   "font-['Kode_Mono']",
@@ -126,7 +123,7 @@ export const GameTypeToggleGroup = ({
                   isSelected && 'text-orange-500'
                 )}
               >
-                {gameType}
+                {modType}
               </Label>
             </button>
           </div>

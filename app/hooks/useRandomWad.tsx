@@ -1,14 +1,13 @@
+import { File, ModType } from '@/lib/idgames'
 import { useCallback, useEffect, useState } from 'react'
 
-import { File } from '../lib/idgames'
-
 export type useRandomWadProps = {
-  modType: 'doom' | 'doom2' | 'doom64' | 'heretic' | 'hexen' | string
+  selectedModTypes: ModType[]
   maxRetries?: number
 }
 
 export const useRandomWad = ({
-  modType,
+  selectedModTypes,
   maxRetries = 3
 }: useRandomWadProps) => {
   const [loading, setLoading] = useState<boolean>(false)
@@ -25,7 +24,7 @@ export const useRandomWad = ({
       setLoading(true)
 
       // First we need to get the directories
-      const name = `levels/${modType}/`
+      const name = `levels/${selectedModTypes}/`
       const outputType = `json`
 
       let action = `getdirs`
@@ -77,12 +76,12 @@ export const useRandomWad = ({
     } finally {
       setLoading(false)
     }
-  }, [modType])
+  }, [selectedModTypes])
 
   // Get a new random wad when modType changes
   useEffect(() => {
     getRandomWad()
-  }, [modType])
+  }, [selectedModTypes])
 
   return { loading, error, wad, getRandomWad }
 }

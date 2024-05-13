@@ -1,6 +1,5 @@
 import { Settings } from 'lucide-react'
 import { ChangeEvent, useState } from 'react'
-import { useDebounce } from 'react-use'
 
 import { cn } from '../lib/utils'
 import { Button } from './ui/button'
@@ -52,7 +51,7 @@ export const UserSettingsDrawer = ({ ...rest }) => {
           <Settings className='mr-1' /> User Settings
         </Button>
       </DrawerTrigger>
-      <DrawerContent className={cn('max-w-[420px]', 'mx-auto')}>
+      <DrawerContent className={cn('max-w-[480px]', 'mx-auto')}>
         <DrawerHeader>
           <DrawerTitle>User Settings</DrawerTitle>
         </DrawerHeader>
