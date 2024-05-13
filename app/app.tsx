@@ -1,14 +1,15 @@
 import { Dices } from 'lucide-react'
-import { ReactNode, useState } from 'react'
+import { useState } from 'react'
 
 import DoomRouletteLogo from './assets/doom-roulette.png'
 import { ModDrawer } from './components/mod-drawer'
 import { ModTypeToggleGroup } from './components/mod-type-toggle-group'
 import { ThemeProvider } from './components/theme-provider'
 import { Button } from './components/ui/button'
-import { UserSettingsDrawer } from './components/user-settings-menu'
+// import { UserSettingsDrawer } from './components/user-settings-menu'
 import { File, ModType, getRandomWad } from './lib/idgames'
 import { cn } from './lib/utils'
+import { Layout } from './components/layout'
 
 const DoomRouletteBrandImage = () => (
   <img
@@ -30,7 +31,6 @@ export const App = () => {
       setLoading(true)
       setError('')
       const res = (await getRandomWad({ selectedModTypes })) as File
-      console.log(res)
       setMod(res)
       setModDrawerIsOpen(true)
     } catch (error) {
@@ -44,7 +44,7 @@ export const App = () => {
   const RollTheDiceButton = ({ className }: { className: string }) => (
     <Button
       onClick={rollTheDice}
-      disabled={loading}
+      disabled={loading||selectedModTypes.length === 0}
       className={cn(
         'h-20',
         'text-xl',
@@ -75,28 +75,9 @@ export const App = () => {
           isOpen={modDrawerIsOpen}
           onOpenChange={setModDrawerIsOpen}
           onClose={() => setMod(undefined)}
-          title={mod?.title}
         />
-        <UserSettingsDrawer />
+        {/* <UserSettingsDrawer /> */}
       </Layout>
     </ThemeProvider>
   )
 }
-
-type LayoutProps = {
-  children: ReactNode | ReactNode[]
-}
-
-export const Layout = ({ children }: LayoutProps) => (
-  <div
-    className={cn(
-      'flex',
-      'flex-col',
-      'container',
-      'max-w-[480px]',
-      'justify-center'
-    )}
-  >
-    {children}
-  </div>
-)

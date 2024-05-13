@@ -16,7 +16,6 @@ import { Rating } from './ui/rating'
 export type ModDrawerProps = {
   isOpen: boolean
   onOpenChange: (open: boolean) => void
-  title: string
   onClose: MouseEventHandler<HTMLButtonElement>
   mod: File
 }
@@ -24,10 +23,19 @@ export type ModDrawerProps = {
 export const ModDrawer = ({
   isOpen,
   onOpenChange,
-  title,
   onClose,
   mod
 }: ModDrawerProps) => {
+
+  const onDownloadClick = (mod: File) => {
+    const a = document.createElement('a')
+    const mirror = `https://youfailit.net/pub/`
+    const downloadURL = `${mirror}/idgames/${mod.idgamesurl.replace('idgames://', '')}`
+    a.href = downloadURL
+    a.style.display = 'none'
+    a.click()
+  }
+
   return (
     <Drawer open={isOpen} onOpenChange={onOpenChange}>
       <DrawerContent className={cn('max-w-[420px]', 'mx-auto')}>
@@ -60,6 +68,7 @@ export const ModDrawer = ({
               'hover:bg-amber-400',
               'cursor-pointer'
             )}
+            onClick={() => onDownloadClick(mod)}
           >
             Download Mod
           </Button>
