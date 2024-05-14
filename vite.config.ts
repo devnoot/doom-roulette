@@ -13,5 +13,5 @@ export default defineConfig({
       }
     }
   },
-  base: './doom-roulette/'
+  base: '/doom-roulette/'
 })
