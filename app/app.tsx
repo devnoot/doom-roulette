@@ -2,6 +2,7 @@ import { Dices } from 'lucide-react'
 import { useState } from 'react'
 
 import DoomRouletteLogo from './assets/doom-roulette.png'
+import { Layout } from './components/layout'
 import { ModDrawer } from './components/mod-drawer'
 import { ModTypeToggleGroup } from './components/mod-type-toggle-group'
 import { ThemeProvider } from './components/theme-provider'
@@ -9,7 +10,6 @@ import { Button } from './components/ui/button'
 // import { UserSettingsDrawer } from './components/user-settings-menu'
 import { File, ModType, getRandomWad } from './lib/idgames'
 import { cn } from './lib/utils'
-import { Layout } from './components/layout'
 
 const DoomRouletteBrandImage = () => (
   <img
@@ -44,7 +44,7 @@ export const App = () => {
   const RollTheDiceButton = ({ className }: { className: string }) => (
     <Button
       onClick={rollTheDice}
-      disabled={loading||selectedModTypes.length === 0}
+      disabled={loading || selectedModTypes.length === 0}
       className={cn(
         'h-20',
         'text-xl',

@@ -26,7 +26,6 @@ export const ModDrawer = ({
   onClose,
   mod
 }: ModDrawerProps) => {
-
   const onDownloadClick = (mod: File) => {
     const a = document.createElement('a')
     const mirror = `https://youfailit.net/pub/`
