@@ -2,7 +2,7 @@
   "name": "doom-roulette-web",
   "productName": "doom-roulette-web",
   "version": "1.0.0",
-  "description": "Discover and play doom mods at random",
+  "description": "The random mod selector for Doom, Doom 2, Heretic, and Hexen.",
   "type": "module",
   "keywords": [],
   "author": {
