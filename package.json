@@ -15,8 +15,7 @@
     "build": "vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "format": "prettier \"app/**/*.{js,jsx,ts,tsx}\" --write",
-    "preview": "vite preview",
-    "serve": "npm run build && node server.cjs"
+    "preview": "vite preview"
   },
   "dependencies": {
     "@radix-ui/react-dropdown-menu": "^2.0.6",
@@ -28,8 +27,6 @@
     "class-variance-authority": "^0.7.0",
     "clipboard": "^2.0.11",
     "clsx": "^2.1.1",
-    "express": "^4.19.2",
-    "http-proxy-middleware": "^3.0.0",
     "lucide-react": "^0.376.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",

@@ -1,7 +1,24 @@
-const express = require('express')
-const { createProxyMiddleware } = require('http-proxy-middleware')
+import express from 'express'
+import { createProxyMiddleware } from 'http-proxy-middleware'
+import requestId from 'express-request-id'
+import morgan from 'morgan'
 
 const app = express()
+
+app.use(requestId)
+
+morgan.token('id', req => {
+  req.id.split('-')[0]
+})
+
+app.use(
+  morgan(
+    "[:date[iso] #:id] Started :method :url for :remote-addr",
+    {
+      immediate: true
+    }
+  )
+)
 
 const apiProxy = createProxyMiddleware({
     target: 'https://doomworld.com/idgames/api/api.php',
