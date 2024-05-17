@@ -1,24 +1,11 @@
 import express from 'express'
 import { createProxyMiddleware } from 'http-proxy-middleware'
-import requestId from 'express-request-id'
 import morgan from 'morgan'
+import { resolve } from 'path'
 
 const app = express()
 
-app.use(requestId)
-
-morgan.token('id', req => {
-  req.id.split('-')[0]
-})
-
-app.use(
-  morgan(
-    "[:date[iso] #:id] Started :method :url for :remote-addr",
-    {
-      immediate: true
-    }
-  )
-)
+app.use(morgan('common'))
 
 const apiProxy = createProxyMiddleware({
     target: 'https://doomworld.com/idgames/api/api.php',
@@ -30,10 +17,10 @@ const apiProxy = createProxyMiddleware({
 
 app.use('/api', apiProxy)
 
-app.use(express.static('dist'))
+app.use(express.static('./dist'))
 
-const PORT = process.env.PORT || 8080
+const PORT = process.env.PORT || 3000 
 
 app.listen(PORT, () => {
-    console.log(`Proxy server is running on port ${PORT}`)
+    console.log(`Server is running on port ${PORT}`)
 })
