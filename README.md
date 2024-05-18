@@ -2,6 +2,10 @@
 
 The random mod selector for Doom, Doom 2, Heretic, and Hexen.
 
+Check it out at [https://doomroulette.com/](https://doomroulette.com/)
+
+## Usage 
+
 Select your base mod types, then click on the big button to roll the dice.
 
 Download your mod, and drag it onto your favorite doom engine to play!
