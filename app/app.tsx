@@ -10,6 +10,7 @@ import { Button } from './components/ui/button'
 // import { UserSettingsDrawer } from './components/user-settings-menu'
 import { File, ModType, getRandomWad } from './lib/idgames'
 import { cn } from './lib/utils'
+import { ModDialog } from './components/mod-dialog'
 
 const DoomRouletteBrandImage = () => (
   <img
@@ -70,12 +71,18 @@ export const App = () => {
           className='my-8'
         />
         <RollTheDiceButton className='mb-3' />
-        <ModDrawer
+        <ModDialog
           mod={mod}
           isOpen={modDrawerIsOpen}
           onOpenChange={setModDrawerIsOpen}
           onClose={() => setMod(undefined)}
         />
+        {/* <ModDrawer
+          mod={mod}
+          isOpen={modDrawerIsOpen}
+          onOpenChange={setModDrawerIsOpen}
+          onClose={() => setMod(undefined)}
+        /> */}
         {/* <UserSettingsDrawer /> */}
       </Layout>
     </ThemeProvider>
