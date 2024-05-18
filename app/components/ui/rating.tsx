@@ -15,14 +15,14 @@ export const Rating = ({ rating, className }: RatingProps) => {
 
   return (
     <div className={cn('w-full', 'justify-between', className)}>
-      <div className={cn('inline-flex', 'me-3')}>
+      <div className={cn('inline-flex')}>
         {Array.from({ length: fullStars }, (_, i) => (
           <Star key={`full-${i}`} className={cn('text-amber-400')} />
         ))}
         {halfStar === 1 && <StarHalf className='text-amber-400' />}
-        {Array.from({ length: emptyStars }, (_, i) => (
+        {/* {Array.from({ length: emptyStars }, (_, i) => (
           <Star key={`empty-${i}`} className='text-gray-700' />
-        ))}
+        ))} */}
       </div>
 
       <div className="font-['Kode_Mono']">
